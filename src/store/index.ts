@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
+import placeDetailsReducer from '../pages/PlaceDetailse/Reduser';
 import placesReducer from './Places/Reducer';
 
 export const store = configureStore({
   reducer: {
     places: placesReducer,
+    placeDetails: placeDetailsReducer,
   },
 });
 
