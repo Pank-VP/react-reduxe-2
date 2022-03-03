@@ -1,0 +1,20 @@
+.mainContainer {
+  .appBar {
+    margin-bottom: 24px;
+    padding: 10px 0;
+  }
+
+  .container {
+    display: flex;
+    font-weight: bold;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0;
+    max-width: 100%;
+  }
+}
+
+.logo {
+  font-size: 16px;
+  cursor: pointer;
+}
