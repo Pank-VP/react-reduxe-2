@@ -12,6 +12,7 @@ import PageLayout from './PageLayout/PageLayout';
 import styles from './PlaceDetails.module.scss';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import NotFound from '../NotFound/NotFound';
 
 const PlaceDetails: FC = () => {
   const dispatch = useDispatch();
@@ -35,7 +36,7 @@ const PlaceDetails: FC = () => {
 
   if(placeDetails[id!] === null) {
     return (
-      <div>Ooops Not Found</div>
+      <NotFound />
     )
   };
 
