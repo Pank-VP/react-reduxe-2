@@ -3,8 +3,10 @@ import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import CreateSafePlacePopup from '../../../components/CreateSavePlacePopup/CreateSafePlacePopup';
+import { ICreateSafePlaceFormData } from '../../../components/CreateSavePlacePopup/validateSafePlaceForm';
 import { RootState } from '../../../store';
-import { openSafePlacePopup } from '../../../store/PopupManagement/ActionCreators';
+import { createPlace } from '../../../store/Places/ActionCreators';
+import { closeSafePlacePopup, openSafePlacePopup } from '../../../store/PopupManagement/ActionCreators';
 import styles from './PageLayout.module.scss'
 
 const PageLayout: FC = ({ children }) => {
@@ -21,6 +23,11 @@ const PageLayout: FC = ({ children }) => {
 
   const { isCreateSafePlacePopupOpen } = useSelector((state: RootState) => state.popupManagement);
 
+  const handleOnSave = async (data: ICreateSafePlaceFormData) => {
+    await dispatch(createPlace(data));
+    dispatch(closeSafePlacePopup());
+  };
+
   return (
     <div className={styles.mainContainer}>
       <AppBar position="sticky" className={styles.appBar}>
@@ -32,7 +39,7 @@ const PageLayout: FC = ({ children }) => {
         </Container>
       </AppBar>
       {children}
-      {isCreateSafePlacePopupOpen && <CreateSafePlacePopup />}
+      {isCreateSafePlacePopupOpen && <CreateSafePlacePopup onSave={handleOnSave} />}
     </div>
   );
 };
