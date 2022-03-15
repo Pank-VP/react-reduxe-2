@@ -11,3 +11,7 @@ export const getPlaceDetails = createAsyncThunk(PlaceDetailsActionType.GetPlaceD
 export const likePlace = createAsyncThunk(PlaceDetailsActionType.Like, (id: string) => {
   return placesApi.like(id);
 });
+
+export const dislikePlace = createAsyncThunk(PlaceDetailsActionType.Dislike, (id: string) => {
+  return placesApi.dislike(id);
+});

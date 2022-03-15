@@ -7,64 +7,77 @@ import DateFormat from '../../constants/DateFormat';
 import { RootState } from '../../store';
 import formatCapacity from '../../utils/formatCapacity';
 import formatDate from '../../utils/formatDate';
-import { getPlaceDetails } from './ActionCreator';
+import { getPlaceDetails, likePlace } from './ActionCreator';
 import PageLayout from './PageLayout/PageLayout';
 import styles from './PlaceDetails.module.scss';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import NotFound from '../NotFound/NotFound';
+import { dislikePlace } from '../../store/PlaceDetails/ActionCreators';
 
 const PlaceDetails: FC = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
-  const placeDetails = useSelector((state: RootState) => state.placeDetails)
+  const placeDetails = useSelector((state: RootState) => state.placeDetails);
 
   useEffect(() => {
     dispatch(getPlaceDetails(id!));
-  }, []);
+  }, [id]);
 
-  const { 
+  const {
     address,
     capacity,
     createdAt,
     description,
     imageSrc,
     type,
+    likes,
+    isLiked,
   } = placeDetails[id!] || {};
 
   const isLoading = placeDetails[id!] === undefined;
 
-  if(placeDetails[id!] === null) {
+  if (placeDetails[id!] === null) {
     return (
       <NotFound />
-    )
+    );
+  }
+
+  const handleLikeClick = () => {
+    dispatch(likePlace(id!));
+  };
+
+  const handleDislikeClick = () => {
+    dispatch(dislikePlace(id!));
   };
 
   return (
     <PageLayout>
       <div>
         <Card>
-          {isLoading && <Skeleton variant="rectangular" height={450} />}
-          {imageSrc && <CardMedia component="img" height="450" image={imageSrc} />}
+          {isLoading && <Skeleton variant="rectangular" height={140} />}
+          {imageSrc && <CardMedia component="img" height="140" image={imageSrc} />}
           <CardContent>
             <Typography gutterBottom variant="h5" component="div">
               {address}
               {isLoading && <Skeleton variant="text" width="33%" />}
             </Typography>
-            <Typography variant="body2" color="text.secondary">
+            <Typography variant="body1" color="text.secondary">
               {description && <ReactMarkdown remarkPlugins={[remarkGfm]}>{description}</ReactMarkdown>}
               {isLoading && <Skeleton variant="text" />}
               {isLoading && <Skeleton variant="text" />}
               {isLoading && <Skeleton variant="text" />}
             </Typography>
-            <Typography className={styles.subtitle} variant='subtitle2' color="text.secondary">
-              {type &&  <PlaceTypeIcon type={type} />}
-              {capacity !== undefined &&<p>{formatCapacity(capacity)}</p>}
+            <Typography className={styles.subtitle} variant="subtitle2" color="text.secondary">
+              {type && <PlaceTypeIcon type={type} />}
+              {capacity !== undefined && <p>{formatCapacity(capacity)}</p>}
               {createdAt && formatDate(createdAt, DateFormat.LongDate)}
+              {isLoading && <Skeleton variant="text" width="33%" />}
             </Typography>
           </CardContent>
           <CardActions>
-            <Button size="small" disabled={isLoading}>Like</Button>
+            {!isLiked && <Button size="small" disabled={isLoading} onClick={handleLikeClick}>{likes} Like</Button>}
+            {isLiked && <Button size="small" disabled={isLoading} onClick={handleDislikeClick} color="error">{likes} Dislike</Button>}
           </CardActions>
         </Card>
       </div>
