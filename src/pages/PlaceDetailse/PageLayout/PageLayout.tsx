@@ -1,11 +1,11 @@
 import { Alert, AppBar, Button, Container, Snackbar } from '@mui/material';
 import { FC, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { IPlace } from '../../../api/Places';
 import CreateSafePlacePopup from '../../../components/CreateSavePlacePopup/CreateSafePlacePopup';
 import { ICreateSafePlaceFormData } from '../../../components/CreateSavePlacePopup/validateSafePlaceForm';
-import { RootState } from '../../../store';
+import { RootState, useAppDispatch } from '../../../store';
 import { createPlace, getPlaces } from '../../../store/Places/ActionCreators';
 import { closeSafePlacePopup, openSafePlacePopup } from '../../../store/PopupManagement/ActionCreators';
 import styles from './PageLayout.module.scss'
@@ -15,7 +15,7 @@ const PageLayout: FC = ({ children }) => {
   const { isCreateSafePlacePopupOpen } = useSelector((state: RootState) => state.popupManagement);
   const [isSuccessToasterShown, setIsSuccessToasterShown] = useState(false);
   const [isErrorToasterShown, setIsErrorToasterShown] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const handleGoToHome = () => {
     navigate('/');
