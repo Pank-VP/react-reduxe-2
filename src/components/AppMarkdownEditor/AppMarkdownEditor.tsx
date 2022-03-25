@@ -1,5 +1,5 @@
 import { MDEditorProps } from '@uiw/react-md-editor';
-import { FC } from 'react';
+import { forwardRef } from 'react';
 import MarkdownEditor from '@uiw/react-md-editor';
 import styles from './AppMarkdownEditor.module.scss';
 import clsx from 'clsx';
@@ -9,13 +9,13 @@ interface AppMarkdownEditorProps extends MDEditorProps {
   helperText?: string;
 }
 
-const AppMarkdownEditor: FC<AppMarkdownEditorProps> = ({ error, helperText, ...markdownProps }) => {
+const AppMarkdownEditor = forwardRef<HTMLDivElement, AppMarkdownEditorProps>(({ error, helperText, ...markdownProps }, ref) => {
   return (
-    <div className={styles.container}>
+    <div className={styles.container} ref={ref}>
       <MarkdownEditor className={clsx(error && styles.error)} {...markdownProps} />
       {helperText && <div className={styles.helperText}>{helperText}</div>}
     </div>
   );
-};
+});
 
 export default AppMarkdownEditor;
